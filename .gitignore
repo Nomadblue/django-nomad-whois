@@ -1,0 +1,9 @@
+*.pyc
+*.swp
+.DS_Store
+.env
+dev.db
+localsettings.py
+latest.pgdump
+db.sqlite3
+website/static/bootstrap
