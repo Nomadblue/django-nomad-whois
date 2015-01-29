@@ -29,7 +29,8 @@ class Command(BaseCommand):
                 except:
                     self.stdout.write('Socket error maybe...?')
                     continue
-                available = True if not obj['contacts']['admin'] else False
+                # available = True if not obj['contacts']['admin'] else False
+                available = True if ('status' not in obj or obj['status'][0] == 'pendingDelete') else False
                 self.stdout.write('%s: %s' % (domain, 'NOT AVAILABLE' if not available else 'OK******************************'))
                 obj, created = Domain.objects.get_or_create(name=domain, available=available)
 
@@ -40,8 +41,14 @@ class Command(BaseCommand):
         list1 = [item.strip() for item in fd1.readlines()]
         list2 = [item.strip() for item in fd2.readlines()]
 
+        # Combine items from two lists 
         list3 = [list2, list1]
         self.query_domain_list(list3)
-
         list3 = [list1, list2]
+        self.query_domain_list(list3)
+
+        # Combine items from same list
+        list3 = [list1, list1]
+        self.query_domain_list(list3)
+        list3 = [list2, list2]
         self.query_domain_list(list3)
